@@ -878,7 +878,7 @@ void saveDocumentsTopicsSentencesAttentions(senDocument** corpus, Model * model,
     fclose(liks_fp);
 }
 
-////////////////////////////////
+////////////////////////
 
 void print_mat(double* mat, int row, int col, char* filename) {
     FILE* fp = fopen(filename,"w");
