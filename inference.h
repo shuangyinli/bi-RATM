@@ -1,5 +1,5 @@
 /*
- * ratm-inference.h
+ * bi_ratm-inference.h
  */
 
 #ifndef INFERENCE_H_
@@ -10,7 +10,7 @@
 #include "unistd.h"
 #include "stdlib.h"
 
-#include "ratm.h"
+#include "bi_ratm.h"
 #include "learn.h"
 
 

@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : ratm.cpp
+// Name        : bi_ratm.cpp
 //============================================================================
 
 #include "stdio.h"
@@ -11,7 +11,7 @@
 
 #include "inference.h"
 #include "learn.h"
-#include "ratm.h"
+#include "bi_ratm.h"
 #include "cstdlib"
 #include "algorithm"
 using namespace std;
@@ -661,7 +661,7 @@ void split_corpus(senDocument ** corpus, senDocument ** test_corpus, senDocument
 
 }
 
-void begin_ratm(char* settingfile, char* inputfile, char* model_root, char* beta_file = NULL) {
+void begin_bi_ratm(char* settingfile, char* inputfile, char* model_root, char* beta_file = NULL) {
 	setbuf(stdout, NULL);
 	Configuration config = Configuration(settingfile);
 	int win = config.win;
@@ -773,7 +773,7 @@ void begin_ratm(char* settingfile, char* inputfile, char* model_root, char* beta
 }
 
 
-void infer_ratm(char* settingfile, char* test_file, char* model_root, char* prefix, char* out_dir=NULL) {
+void infer_bi_ratm(char* settingfile, char* test_file, char* model_root, char* prefix, char* out_dir=NULL) {
     setbuf(stdout,NULL);
     Configuration configuration = Configuration(settingfile);
 
@@ -895,13 +895,13 @@ int main(int argc, char* argv[]) {
 
 	if (argc > 1 && argc == 5 && strcmp(argv[1],"est") == 0) {
 		printf("Now begin training...\n");
-		begin_ratm(argv[2],argv[3], argv[4], NULL);
+		begin_bi_ratm(argv[2],argv[3], argv[4], NULL);
 	}else if(argc > 1 && argc == 6 && strcmp(argv[1],"est") == 0){
 		printf("Now begin training with initial parameters...\n");
-		begin_ratm(argv[2],argv[3], argv[4], argv[5]);
+		begin_bi_ratm(argv[2],argv[3], argv[4], argv[5]);
 	}else if(argc > 1 && argc == 7 && strcmp(argv[1],"inf") == 0){
 		printf("Now begin inference...\n");
-		infer_ratm(argv[2], argv[3], argv[4],argv[5], argv[6]);
+		infer_bi_ratm(argv[2], argv[3], argv[4],argv[5], argv[6]);
 	}
 	else {
 		printf("Please use the following setting.\n");

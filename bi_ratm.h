@@ -1,7 +1,7 @@
 /* */
 
-#ifndef RATM_H_
-#define RATM_H_
+#ifndef BIRATM_H_
+#define BIRATM_H_
 
 #include "stdio.h"
 #include "utils.h"
@@ -63,7 +63,7 @@ struct senDocument{
 		num_sentences = num_sentences_;
 		rou = new double[num_topics];
 		doctopic = new double[num_topics];
-		docTopicMatrix = new double[(docwin+num_sentences)*num_topics];
+		docTopicMatrix = new double[((docwin*2)+num_sentences)*num_topics];
 		sentences = new Sentence* [num_sentences];
 		init();
 	}
@@ -76,7 +76,7 @@ struct senDocument{
 			num_sentences = num_sentences_;
 			doctopic = new double[num_topics];
 			rou = new double[num_topics];
-			docTopicMatrix = new double[(docwin+num_sentences)*num_topics];
+			docTopicMatrix = new double[((docwin*2)+num_sentences)*num_topics];
 			sentences = sentence_;
 			init();
 		}

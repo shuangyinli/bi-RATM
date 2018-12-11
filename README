@@ -1,9 +1,9 @@
-RATM
+bi_RATM
 
 Please use the code as follows:
 
 －－－－－－－－－－－－－－－－－－－－－－
-cd [your path]/ratm/
+cd [your path]/bi_ratm/
 
 chmod 777 ./example.sh
 

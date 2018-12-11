@@ -1,14 +1,14 @@
 /*
- * rtm-learn.h
+ * bi_ratm-learn.h
  *
- *  Created on: Mar 21, 2016
+ *  Created on: NOV 30, 2018
  *      Author: shuangyinli
  */
 
 #ifndef LEARN_H_
 #define LEARN_H_
 
-#include "ratm.h"
+#include "bi_ratm.h"
 #include "utils.h"
 
 void normalize_log_matrix_rows(double* log_mat, int rows, int cols) ;

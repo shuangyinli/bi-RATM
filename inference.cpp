@@ -1,5 +1,5 @@
 /*
- * ratm-inference.cpp
+ * bi_ratm-inference.cpp
  */
 #include "inference.h"
 
@@ -26,15 +26,18 @@ void doInference(senDocument* doc, Model* model, Configuration* configuration) {
     		Sentence* sentence = doc->sentences[s];
 
             //init the window topics for each sentence
-				for (int i = 0; i < 2*win; i++) {
-					for (int k = 0; k < num_topics; k++) {
-						sentence->wintopics[i * num_topics + k] = doc->docTopicMatrix[(i + s + 1) * num_topics + k];
-					}
-				}
 
-				for (int k = 0; k < num_topics; k++) {
-					sentence->wintopics[(2*win) * num_topics + k] =doc->doctopic[k];
-				}
+                        for(int i = 0; i < win-1; i++)
+                            for (int k = 0; k < num_topics; k++)
+                                sentence->wintopics[i * num_topics + k] = doc->docTopicMatrix[(i + s + 1) * num_topics + k];
+                        
+                        for(int i = win+1; i < 2*win; i++)
+                            for (int k = 0; k < num_topics; k++)
+                                sentence->wintopics[i * num_topics + k] = doc->docTopicMatrix[(i + s + 1) * num_topics + k];
+
+        				for (int k = 0; k < num_topics; k++) {
+        					sentence->wintopics[(2*win) * num_topics + k] =doc->doctopic[k];
+        				}
 		
 
 			double * old_sen_loggamma = new double[sentence->num_words * num_topics];
@@ -89,6 +92,7 @@ void doInference(senDocument* doc, Model* model, Configuration* configuration) {
 void inferenceRou(senDocument* document, Model* model) {
 		int num_sentence = document->num_sentences;
 	    int win = model->win;
+        int win_f = model->win_f;
 	    int num_topics = model->num_topics;
 	    double * doc_rou = document->rou;
 	    double * alpha = model->alpha;
@@ -100,13 +104,13 @@ void inferenceRou(senDocument* document, Model* model) {
 	    	int sen_num_words = sentence->num_words;
 	    	double * log_gamma = sentence->log_gamma;
 	    	double sigma_xi = 0;
-	    	for (int i = 0; i < win; i++) sigma_xi += sentence->xi[i];
+	    	for (int i = 0; i < win_f; i++) sigma_xi += sentence->xi[i];
 	    	for (int k = 0; k < num_topics; k++) {
 	    			double sigma_gamma = 0.0;
 	    			for (int j = 0; j < sen_num_words; j++) {
 	    				sigma_gamma += exp(log_gamma[j * num_topics + k]);
 	    			}
-	    			doc_rou[k] += sigma_gamma * (sentence->xi[win - 1] / sigma_xi);
+	    			doc_rou[k] += sigma_gamma * (sentence->xi[2*win] / sigma_xi);
 	    			if (isnan(doc_rou[k]) || isinf(doc_rou[k])) {
 	    				printf("rou is nan ");
 	    			}
@@ -318,6 +322,7 @@ inline void initXi(double* xi,int win_f) {
 
 double verifyTestSet(senDocument** test_corpus, Model* model, Configuration* configuration, int test_num_docs) {
     int win = model->win;
+    int win_f = model->win_f;
     int num_topics = model->num_topics;
     int num_words = model->num_words;
     bool* reset_beta_flag = new bool[num_topics * model->num_words];
@@ -327,9 +332,9 @@ double verifyTestSet(senDocument** test_corpus, Model* model, Configuration* con
         for(int s =0; s<doc->num_sentences; s++){
             Sentence* sentence = doc->sentences[s];
            
-                for (int i = 0; i < win - 1; i++)
+                for (int i = 0; i < 2*win; i++)
                     for (int k = 0; k < num_topics; k++) sentence->wintopics[i * num_topics + k] = doc->docTopicMatrix[(i + s + 1) * num_topics + k];
-                for (int k = 0; k < num_topics; k++) sentence->wintopics[(win-1) * num_topics + k] =doc->doctopic[k];
+                for (int k = 0; k < num_topics; k++) sentence->wintopics[(2*win) * num_topics + k] =doc->doctopic[k];
             
             inferenceXi(sentence,model, configuration);
             inferenceGamma(sentence, model);

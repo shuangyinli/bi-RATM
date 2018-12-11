@@ -1,5 +1,5 @@
 /*
- * ratm-learn.cpp
+ * bi_ratm-learn.cpp
  */
 
 #include "learn.h"

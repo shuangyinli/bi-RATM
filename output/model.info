@@ -1,0 +1,8 @@
+num_words: 21968
+num_topics: 10
+num_docs: 20866
+test_num_docs: 0
+train_num_docs: 20866
+num_all_words_in_test: 0
+num_all_words_in_train: 1431250
+win: 2
